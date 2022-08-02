@@ -47,11 +47,14 @@ p_load(
   xgboost
 )
 
+###*** 1. Base de datos ***###
 ## Llamado base de datos
 df <- import("df.rds")
 
+## ajustes a base de datos 
 df$month <- as.factor(month(df$Date))
 
+# se crea variable de logaritmo del WTI
 function1 <- function(x){
   log <- log(x)
   colnames(log) <- paste("log", colnames(x))
@@ -88,6 +91,7 @@ df <- bind_cols(df, lag_df)
 
 df <- df[,c(3, 5:31)]
 
+# se crea base de datos test
 df_test <- df[320:400,]
 
 df <- df[7:400,]
@@ -108,19 +112,24 @@ df_test2 <- df2[176:221,]
 
 df2 <- df2[7:221,]
 
-rWTI_ts<-ts(df$rWTI_A, start = c(1989, 8), frequency = 12)
+###*** 2. Creación de modelos ***###
+
+## Serie WTI mensual de enero de 1989 a mayo de 2022
+rWTI_ts<-ts(df$rWTI_A, start = c(1989, 8), frequency = 12) 
 rWTI_ts<-window(rWTI_ts, start=c(2015, 9))
 
+## Serie WTI mensual + variables macro de USA + variables google trend
 rWTI_ts2<-ts(df2$rWTI_A, start = c(2004, 7), frequency = 12)
 rWTI_ts2<-window(rWTI_ts2, start=c(2018, 8))
 
+## modelo univariado
 set.seed(1)
 
 control <- trainControl(method = "timeslice",
                               initialWindow = 313,
                               horizon = 1,
                               fixedWindow = FALSE)
-
+# 2.1 Elastic Net
 elasticnet1 <- train(
   rWTI_A~.,
   data = df,
@@ -150,6 +159,8 @@ elasticnet2 <- train(
 
 predElasticnet2<-predict(elasticnet2,df_test2)
 
+# 2.2. Boost
+# se define grilla
 grid_default <- expand.grid(nrounds = c(100,250),
                             max_depth = c(4,6,8),
                             eta = c(0.01,0.3,0.5),
