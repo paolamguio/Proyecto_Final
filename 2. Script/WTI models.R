@@ -11,8 +11,6 @@ rm(list = ls())
 setwd("C:/Users/amorales/OneDrive - ANI/Documentos/GitHub/Proyecto_Final/4. Stores")
 
 ## llamado librerías de la sesión
-rm(list = ls())
-
 require(pacman)
 p_load(
   tidyverse,
