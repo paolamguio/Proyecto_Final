@@ -1,3 +1,16 @@
+
+# Modelos univariables - WTI
+# Proyecto Final
+# Grupo 16
+# Andres Martinez, Paola Morales y Oscar Cortes 
+--------------------------------------------------
+  
+## preparación del espacio
+rm(list = ls())
+
+setwd("C:/Users/amorales/OneDrive - ANI/Documentos/GitHub/Proyecto_Final/4. Stores")
+
+## llamado librerías de la sesión
 rm(list = ls())
 
 require(pacman)
@@ -32,6 +45,7 @@ p_load(
   rugarch
 )
 
+## Llamado base de datos
 df <- read.xlsx("WTI.xlsx", 1)
 
 df <- df %>%
