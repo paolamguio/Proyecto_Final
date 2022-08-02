@@ -9,8 +9,7 @@
 rm(list = ls())
 
 setwd("C:/Users/amorales/OneDrive - ANI/Documentos/GitHub/Proyecto_Final/4. Stores")
-setwd("C:/Users/ocaco/OneDrive/15. Maestria Economia/9. Big Data/GitHub/Proyecto_Final/4. Stores")
-
+setwd("C:/Users/ocaco/OneDrive/15. Maestria Economia/9. Big Data/3. GitHub/Proyecto_Final/4. Stores")
 
 
 require(pacman)
