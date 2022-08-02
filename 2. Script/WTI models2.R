@@ -122,7 +122,6 @@ rWTI_ts<-window(rWTI_ts, start=c(2015, 9))
 rWTI_ts2<-ts(df2$rWTI_A, start = c(2004, 7), frequency = 12)
 rWTI_ts2<-window(rWTI_ts2, start=c(2018, 8))
 
-## modelo univariado
 set.seed(1)
 
 control <- trainControl(method = "timeslice",
@@ -293,6 +292,7 @@ predpca2<-ts(predpca2, start = c(2018, 8), frequency = 12)
 predxgboost1<-ts(predxgboost1, start = c(2015, 9), frequency = 12)
 predxgboost2<-ts(predxgboost2, start = c(2018, 8), frequency = 12)
 
+###*** 3. Accuracy modelos ***###
 accuracyElasticnet <- accuracy(predElasticnet1, rWTI_ts)
 rownames(accuracyElasticnet) <- "Elastic Net Model 1"
 
@@ -327,4 +327,5 @@ accuracy <- as.data.frame(accuracy)
 accuracy$Model <- row.names(accuracy)
 accuracy <- accuracy %>% select(Model, everything())
 
+# generación base de datos
 write_xlsx(accuracy, "WTI Models2.xlsx")
