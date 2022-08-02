@@ -46,6 +46,7 @@ p_load(
 ###*** 1. Base de datos ***###
 ## Llamado base de datos
 df <- read.xlsx("WTI.xlsx", 1)
+df <- WTI
 
 ## ajustes a base de datos 
 df <- df %>%
