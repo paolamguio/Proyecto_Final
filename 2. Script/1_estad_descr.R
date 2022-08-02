@@ -23,3 +23,26 @@ p_load(tidyverse,
        plotly, 
        leaflet
        )
+
+###*** 1. Estadísticas descriptivas ***###
+## se importa bases de datos creada en 2_WTI models
+df<- readRDS("df.rds")
+class(df)
+dim(df)
+colnames(df)
+summary(df)
+
+# estadísiticas descriptivas generales datos
+
+stat.desc(df)
+descriptivas <- stat.desc(df) # se guardan las estadísticas descriptivas de todas las variables para luego exportarlas a un excel
+descriptivas$Estadisticas <- row.names(descriptivas) # se crea columna dentro del dataframe con el nombre de las filas 
+descriptivas <- descriptivas %>% select(Estadisticas, everything()) # se ubica la columna creada en la primera posición 
+write_xlsx(descriptivas, "descriptivas.xlsx") # se exporta a excel tabla con las estadísticas descriptivas
+
+# Gráficos 
+
+## gráficos de estadísticas descriptivas
+ggplot(data = df , mapping = aes(x = WTI , y = Date)) +
+  geom_point(col = "red" , size = 0.5) 
+
