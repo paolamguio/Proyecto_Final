@@ -3,7 +3,7 @@
 # Proyecto Final
 # Grupo 16
 # Andres Martinez, Paola Morales y Oscar Cortes 
---------------------------------------------------
+#--------------------------------------------------
   
 ## preparación del espacio
 rm(list = ls())
@@ -12,8 +12,6 @@ setwd("C:/Users/amorales/OneDrive - ANI/Documentos/GitHub/Proyecto_Final/4. Stor
 setwd("C:/Users/ocaco/OneDrive/15. Maestria Economia/9. Big Data/GitHub/Proyecto_Final/4. Stores")
 
 
-## llamado librerías de la sesión
-rm(list = ls())
 
 require(pacman)
 p_load(
