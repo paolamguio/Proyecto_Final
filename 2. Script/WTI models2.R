@@ -1,5 +1,16 @@
+
+# Modelos multivariados - WTI
+# Proyecto Final
+# Grupo 16
+# Andres Martinez, Paola Morales y Oscar Cortes 
+--------------------------------------------------
+  
+## preparación del espacio
 rm(list = ls())
 
+setwd("C:/Users/amorales/OneDrive - ANI/Documentos/GitHub/Proyecto_Final/4. Stores")
+
+## llamado librerías de la sesión
 require(pacman)
 p_load(
   tidyverse,
@@ -34,6 +45,8 @@ p_load(
   xgboost
 )
 
+###*** 1. Base de datos ***###
+## Llamado base de datos
 df <- import("df.rds")
 
 df$month <- as.factor(month(df$Date))
@@ -80,6 +93,7 @@ df <- df[,c(3, 5:31)]
 
 df3 <- df[7:400,]
 
+# se crea base de datos test
 df_test <- df[310:383,]
 
 df_forecast <- df[384:400,]
@@ -106,9 +120,13 @@ df_forecast2 <- df2[205:221,]
 
 df2 <- df2[7:204,]
 
+###*** 2. Creación de modelos ***###
+
+## Serie WTI mensual de enero de 1989 a mayo de 2022
 rWTI_ts<-ts(df$rWTI_A, start = c(1989, 8), frequency = 12)
 rWTI_ts<-window(rWTI_ts, start=c(2014, 11))
 
+## Serie WTI mensual + variables gas natural + variables google trend
 rWTI_ts2<-ts(df2$rWTI_A, start = c(2004, 7), frequency = 12)
 rWTI_ts2<-window(rWTI_ts2, start=c(2017, 9))
 
@@ -119,6 +137,7 @@ control <- trainControl(method = "timeslice",
                               horizon = 1,
                               fixedWindow = FALSE)
 
+# 2.1 Elastic Net
 elasticnet1 <- train(
   rWTI_A~.,
   data = df,
@@ -148,6 +167,8 @@ elasticnet2 <- train(
 
 predElasticnet2<-predict(elasticnet2,df_test2)
 
+# 2.2. Booststrap
+# se define grilla
 grid_default <- expand.grid(nrounds = c(100,250),
                             max_depth = c(4,6,8),
                             eta = c(0.01,0.3,0.5),
@@ -285,6 +306,7 @@ predpca2<-ts(predpca2, start = c(2017, 9), frequency = 12)
 predxgboost1<-ts(predxgboost1, start = c(2014, 11), frequency = 12)
 predxgboost2<-ts(predxgboost2, start = c(2017, 9), frequency = 12)
 
+###*** 3. Accuracy modelos ***###
 accuracyElasticnet <- accuracy(predElasticnet1, rWTI_ts)
 rownames(accuracyElasticnet) <- "Elastic Net Model 1"
 
@@ -319,6 +341,7 @@ accuracy <- as.data.frame(accuracy)
 accuracy$Model <- row.names(accuracy)
 accuracy <- accuracy %>% select(Model, everything())
 
+# generación base de datos
 write_xlsx(accuracy, "WTI Models2.xlsx")
 
 plot(predpca2)
@@ -338,6 +361,7 @@ WTI_proyecciones <- ts.union(rWTI_A = rWTI_ts, WTI_proyecciones, WTI_proyeccione
 
 WTI_proyecciones %>% autoplot()
 
+# generación base de datos
 WTI_proyecciones3 <- import("WTI proyeccion.rds")
 
 WTI_proyecciones <- ts.union(WTI_proyecciones, WTI_proyecciones3)
