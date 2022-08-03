@@ -76,7 +76,7 @@ df %>% autoplot(rWTI_A) + labs(title = "WTI Price Returns Outliers Adjusted", y 
 
 # se definen bases de datos de train y test
 df_train <- df %>% filter_index(. ~ "2014 Oct")
-df_test <- df %>% filter_index("2014 Sep" ~ "2020 Dic")
+df_test <- df %>% filter_index("2014 Sep" ~ "2020 Dec")
 
 df_train %>%
   gg_tsdisplay(rWTI_A, plot_type='partial')
