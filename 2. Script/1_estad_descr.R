@@ -40,9 +40,4 @@ descriptivas$Estadisticas <- row.names(descriptivas) # se crea columna dentro de
 descriptivas <- descriptivas %>% select(Estadisticas, everything()) # se ubica la columna creada en la primera posición 
 write_xlsx(descriptivas, "descriptivas.xlsx") # se exporta a excel tabla con las estadísticas descriptivas
 
-# Gráficos 
-
-## gráficos de estadísticas descriptivas
-ggplot(data = df , mapping = aes(x = WTI , y = Date)) +
-  geom_point(col = "red" , size = 0.5) 
 
